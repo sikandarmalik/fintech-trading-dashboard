@@ -23,7 +23,7 @@ A production-quality web dashboard for real-time price and trade data visualizat
 
 ### Demo Video
 
-📹 **[Watch 2-minute demo video](https://github.com/user-attachments/assets/101012b0-ecf3-48d7-be59-c0ee8a46de43)**
+📹 **[Watch 2-minute demo video](https://github.com/user-attachments/assets/c65711e2-f6c2-4d40-a9f3-79c630b5bc57)**
 
 The demo showcases:
 - User authentication flow
