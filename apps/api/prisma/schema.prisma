@@ -1,0 +1,72 @@
+// Prisma schema for fintech trading dashboard
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id           String      @id @default(cuid())
+  email        String      @unique
+  passwordHash String
+  createdAt    DateTime    @default(now())
+  updatedAt    DateTime    @updatedAt
+  watchlists   Watchlist[]
+}
+
+model Symbol {
+  id         String      @id @default(cuid())
+  ticker     String      @unique
+  name       String
+  market     String
+  createdAt  DateTime    @default(now())
+  priceTicks PriceTick[]
+
+  @@index([ticker])
+  @@index([market])
+}
+
+model PriceTick {
+  id        String   @id @default(cuid())
+  symbolId  String
+  timestamp DateTime @default(now())
+  open      Float
+  high      Float
+  low       Float
+  close     Float
+  volume    Float
+
+  symbol Symbol @relation(fields: [symbolId], references: [id], onDelete: Cascade)
+
+  @@index([symbolId])
+  @@index([timestamp])
+  @@index([symbolId, timestamp])
+}
+
+model Watchlist {
+  id        String          @id @default(cuid())
+  userId    String
+  name      String
+  createdAt DateTime        @default(now())
+  updatedAt DateTime        @updatedAt
+  items     WatchlistItem[]
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId])
+}
+
+model WatchlistItem {
+  id          String   @id @default(cuid())
+  watchlistId String
+  symbol      String
+  createdAt   DateTime @default(now())
+
+  watchlist Watchlist @relation(fields: [watchlistId], references: [id], onDelete: Cascade)
+
+  @@unique([watchlistId, symbol])
+  @@index([watchlistId])
+}
